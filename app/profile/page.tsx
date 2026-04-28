@@ -11,7 +11,7 @@ import { useFitProfile } from "@/lib/useFitProfile";
 
 export default function ProfileManagement() {
   const { user, isLoaded } = useUser();
-  const { measurements, saveMeasurements } = useFitProfile();
+  const { measurements, saveMeasurements, updateLocalMeasurements } = useFitProfile();
 
   // AI Fit Generator States
   const [searchQuery, setSearchQuery] = useState("");
@@ -174,7 +174,7 @@ export default function ProfileManagement() {
                <input 
                  type="number" 
                  value={measurements.height}
-                 onChange={(e) => saveMeasurements({...measurements, height: e.target.value})}
+                 onChange={(e) => updateLocalMeasurements({...measurements, height: e.target.value})}
                  placeholder="e.g. 175"
                  className="w-full max-w-[200px] border border-black/20 rounded-xl px-4 py-2 text-sm focus:outline-none focus:border-black/50 bg-white"
                />
@@ -228,7 +228,7 @@ export default function ProfileManagement() {
                       placeholder="--"
                       className="w-full bg-[#f9f9f9] border border-black/10 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-black/30 transition-colors"
                       value={measurements[field.key as keyof typeof measurements]}
-                      onChange={(e) => saveMeasurements({ ...measurements, [field.key]: e.target.value })}
+                      onChange={(e) => updateLocalMeasurements({ ...measurements, [field.key]: e.target.value })}
                     />
                     <span className="absolute right-4 top-1/2 -translate-y-1/2 text-xs font-bold text-black/30">{field.suffix}</span>
                   </div>

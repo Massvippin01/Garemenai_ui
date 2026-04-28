@@ -86,5 +86,10 @@ export function useFitProfile() {
     }
   };
 
-  return { measurements, saveMeasurements, mounted };
+  const updateLocalMeasurements = (newMeasurements: FitMeasurements) => {
+    setMeasurements(newMeasurements);
+    localStorage.setItem("celestials-fit-profile", JSON.stringify(newMeasurements));
+  };
+
+  return { measurements, saveMeasurements, updateLocalMeasurements, mounted };
 }
