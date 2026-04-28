@@ -10,6 +10,7 @@ import Link from "next/link";
 import { createOrder } from "@/lib/actions/order.actions";
 import { useFitProfile } from "@/lib/useFitProfile";
 import { PRODUCTS } from "@/lib/data";
+import { useUser, SignInButton } from "@clerk/nextjs";
 
 export default function CheckoutPage() {
   const router = useRouter();
@@ -20,6 +21,8 @@ export default function CheckoutPage() {
   const [confirmedHash, setConfirmedHash] = useState("");
   const [firstName, setFirstName] = useState("Alex");
   const [lastName, setLastName] = useState("Carter");
+  
+  const { user, isLoaded } = useUser();
 
   const discountRate = 0.20;
   const discountAmount = subtotal * discountRate;
@@ -200,13 +203,27 @@ export default function CheckoutPage() {
                 <span className="text-3xl font-black" style={{ fontFamily: "'DM Sans', sans-serif" }}>${total.toFixed(2)}</span>
               </div>
 
-              <button
-                onClick={startCheckout}
-                className="w-full bg-white text-black py-4 rounded-full font-bold text-lg hover:scale-[1.02] transition-transform flex items-center justify-center gap-2"
-                style={{ fontFamily: "'DM Sans', sans-serif" }}
-              >
-                Pay Now <ChevronRight className="w-5 h-5" />
-              </button>
+              {isLoaded && user ? (
+                <button
+                  onClick={startCheckout}
+                  className="w-full bg-white text-black py-4 rounded-full font-bold text-lg hover:scale-[1.02] transition-transform flex items-center justify-center gap-2"
+                  style={{ fontFamily: "'DM Sans', sans-serif" }}
+                >
+                  Pay Now <ChevronRight className="w-5 h-5" />
+                </button>
+              ) : (
+                <div className="w-full">
+                  <p className="text-red-400 text-xs font-bold text-center mb-3 uppercase tracking-widest">Authentication Required</p>
+                  <SignInButton mode="modal" fallbackRedirectUrl="/checkout">
+                    <button
+                      className="w-full bg-indigo-600 text-white py-4 rounded-full font-bold text-lg hover:bg-indigo-500 transition-colors flex items-center justify-center gap-2"
+                      style={{ fontFamily: "'DM Sans', sans-serif" }}
+                    >
+                      Sign In to Checkout <ChevronRight className="w-5 h-5" />
+                    </button>
+                  </SignInButton>
+                </div>
+              )}
             </div>
           </div>
         )}

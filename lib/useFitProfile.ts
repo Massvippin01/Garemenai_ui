@@ -1,6 +1,8 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { useUser } from "@clerk/nextjs";
+import { getCloudIntelligence, syncUserIntelligence } from "./actions/user.actions";
 
 export interface FitMeasurements {
   height: string;
@@ -22,22 +24,62 @@ export function useFitProfile() {
   });
   const [mounted, setMounted] = useState(false);
 
+  const { user, isLoaded } = useUser();
+
+  // 1. Initial Load (Checks Cloud first, then falls back to LocalStorage)
   useEffect(() => {
     setMounted(true);
-    const stored = localStorage.getItem("celestials-fit-profile");
-    if (stored) {
-      try {
-        setMeasurements(JSON.parse(stored));
-      } catch (e) {
-        console.error("Failed to parse fit profile", e);
-      }
-    }
-  }, []);
+    
+    const loadProfile = async () => {
+      let activeMeasurements = null;
 
+      // Prioritize Cloud Database if user is securely logged in
+      if (isLoaded && user) {
+         const cloudData = await getCloudIntelligence();
+         if (cloudData.success && cloudData.profile) {
+            activeMeasurements = {
+               height: cloudData.profile.height || "",
+               weight: cloudData.profile.weight || "",
+               chest: cloudData.profile.chest || "",
+               waist: cloudData.profile.waist || "",
+               hips: cloudData.profile.hips || "",
+               inseam: cloudData.profile.inseam || ""
+            };
+            // Sync cloud down to fast local storage for UI snapping
+            localStorage.setItem("celestials-fit-profile", JSON.stringify(activeMeasurements));
+         }
+      }
+      
+      // Fallback to local storage if not logged in or cloud is empty
+      if (!activeMeasurements) {
+        const stored = localStorage.getItem("celestials-fit-profile");
+        if (stored) {
+          try {
+            activeMeasurements = JSON.parse(stored);
+          } catch (e) {
+            console.error("Failed to parse fit profile", e);
+          }
+        }
+      }
+
+      if (activeMeasurements) {
+        setMeasurements(activeMeasurements);
+      }
+    };
+
+    loadProfile();
+  }, [user, isLoaded]);
+
+  // 2. Global Save Trigger (Saves to Local + securely pipelines to Neon DB)
   const saveMeasurements = (newMeasurements: FitMeasurements) => {
     setMeasurements(newMeasurements);
     if (mounted) {
       localStorage.setItem("celestials-fit-profile", JSON.stringify(newMeasurements));
+      
+      // Autonomous Database Pipeline
+      if (isLoaded && user) {
+         syncUserIntelligence(newMeasurements).catch(err => console.error("Cloud DB ML Sync failed", err));
+      }
     }
   };
 

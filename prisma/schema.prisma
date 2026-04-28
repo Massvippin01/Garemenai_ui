@@ -22,6 +22,22 @@ model Review {
   createdAt DateTime @default(now())
 }
 
+model User {
+  clerkId   String   @id // Bound explicitly to Clerk Identity Token
+  email     String   @unique
+  firstName String?
+  lastName  String?
+  // Machine Learning Physical State Parameters
+  height    String?
+  weight    String?
+  chest     String?
+  waist     String?
+  hips      String?
+  inseam    String?
+  orders    Order[]
+  createdAt DateTime @default(now())
+}
+
 model Order {
   id           String      @id @default(uuid())
   orderHash    String      @unique
@@ -32,6 +48,11 @@ model Order {
   riskReasons  String      @default("Perfect size match")
   status       String      @default("CONFIRMED")
   createdAt    DateTime    @default(now())
+
+  // Secure identity mapping (Optional to allow historical non-auth orders to remain, but bound going forward)
+  clerkId      String?
+  user         User?       @relation(fields: [clerkId], references: [clerkId])
+  
   items        OrderItem[]
 }
 

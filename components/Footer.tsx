@@ -100,7 +100,7 @@ export default function Footer() {
           {/* Payment badges */}
           <div className="flex gap-3 items-center">
             <div className="bg-white border border-[#D6DCE5] rounded-[5px] w-[46px] h-[30px] flex items-center justify-center shadow-sm overflow-hidden p-1 relative">
-              <Image src="/images/visa.png" alt="Visa" fill className="object-contain p-1" />
+              <Image src="/images/Visa.png" alt="Visa" fill className="object-contain p-1" />
             </div>
             <div className="bg-white border border-[#D6DCE5] rounded-[5px] w-[46px] h-[30px] flex items-center justify-center shadow-sm overflow-hidden p-1 relative">
               <Image src="/images/mastercard.png" alt="Mastercard" fill className="object-contain p-1" />

@@ -16,9 +16,7 @@ export default function IntelligenceDashboard() {
   useEffect(() => {
     // Only available on the client after mount
     setEnvStatus({
-      recommender: process.env.NEXT_PUBLIC_ML_RECOMMENDER_URL || "http://localhost:8000/recommend_size (Default)",
-      photoCV: process.env.NEXT_PUBLIC_ML_PHOTO_URL || "http://localhost:8002/analyze (Default)",
-      sentiment: process.env.NEXT_PUBLIC_ML_SENTIMENT_URL || "http://localhost:8003/analyze_review (Default)"
+      computeNode: process.env.NEXT_PUBLIC_ML_COMPUTE_NODE_URL || "http://localhost:8080 (Default Local Node)",
     });
   }, []);
 
@@ -124,20 +122,20 @@ export default function IntelligenceDashboard() {
             <h2 className="text-xl font-bold text-black mb-4 flex items-center gap-2" style={{ fontFamily: "'DM Sans', sans-serif" }}>
               <Server className="w-5 h-5 text-teal-500" /> Edge Neural Tunnels
             </h2>
-            <p className="text-sm text-black/60 mb-6 font-medium">Live API endpoints powering explicit intelligence.</p>
+            <p className="text-sm text-black/60 mb-6 font-medium">The single Unified Fast API Gateway securely redirecting traffic to local PyTorch memory cores.</p>
             
             <div className="space-y-4 font-mono text-xs">
               <div className="bg-[#F9F9F9] p-4 rounded-xl border border-black/5 shadow-sm">
-                <span className="text-black font-bold uppercase tracking-widest block mb-1">Recommender (Port 8000)</span>
-                <span className="text-black/60 break-all">{envStatus.recommender}</span>
+                <span className="text-black font-bold uppercase tracking-widest block mb-1">Central ML Compute Node (Port 8080)</span>
+                <span className="text-black/60 break-all">{envStatus.computeNode}</span>
               </div>
-              <div className="bg-[#F9F9F9] p-4 rounded-xl border border-black/5 shadow-sm">
-                <span className="text-black font-bold uppercase tracking-widest block mb-1">Photo CV (Port 8002)</span>
-                <span className="text-black/60 break-all">{envStatus.photoCV}</span>
-              </div>
-              <div className="bg-[#F9F9F9] p-4 rounded-xl border border-black/5 shadow-sm">
-                <span className="text-black font-bold uppercase tracking-widest block mb-1">Sentiment (Port 8003)</span>
-                <span className="text-black/60 break-all">{envStatus.sentiment}</span>
+              <div className="bg-emerald-50 p-3 rounded-xl border border-emerald-100 mt-4">
+                 <span className="text-emerald-800 text-xs font-bold uppercase tracking-widest">Internal Thread Routing:</span>
+                 <ul className="text-emerald-900/70 text-sm mt-2 space-y-1 font-medium">
+                    <li>&rarr; Recommender: :8000</li>
+                    <li>&rarr; Photo CV: :8002</li>
+                    <li>&rarr; Sentiment: :8003</li>
+                 </ul>
               </div>
             </div>
           </div>

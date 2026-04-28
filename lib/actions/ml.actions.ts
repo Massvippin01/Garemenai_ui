@@ -3,7 +3,8 @@
 // Server action to query the Sentiment Analysis Model (Model 1)
 export async function analyzeSentiment(text: string, rating: number = 5) {
   try {
-    const apiEndpoint = process.env.ML_SENTIMENT_URL || "http://localhost:8003/analyze_review";
+    const computeNode = process.env.ML_COMPUTE_NODE_URL || "http://localhost:8080";
+    const apiEndpoint = `${computeNode}/api/analyze_review`;
     const res = await fetch(apiEndpoint, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -27,7 +28,8 @@ export async function analyzeSentiment(text: string, rating: number = 5) {
 // Server action to query the Smart Size Recommender (Model 3)
 export async function predictSize(weight: number, height: number, age: number, brand: string = "") {
   try {
-    const apiEndpoint = process.env.ML_RECOMMENDER_URL || "http://localhost:8000/recommend_size";
+    const computeNode = process.env.ML_COMPUTE_NODE_URL || "http://localhost:8080";
+    const apiEndpoint = `${computeNode}/api/recommend_size`;
     const res = await fetch(apiEndpoint, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -46,8 +48,11 @@ export async function predictSize(weight: number, height: number, age: number, b
 // Server action to query the Photo Model (Model 3 Extra / Balanced API)
 export async function analyzeVisualFit(formData: FormData) {
   try {
+    const computeNode = process.env.ML_COMPUTE_NODE_URL || "http://localhost:8080";
+    const apiEndpoint = `${computeNode}/api/analyze_photo`;
+
     // Forward the multipart form data directly to the local python API
-    const res = await fetch("http://localhost:8002/analyze", {
+    const res = await fetch(apiEndpoint, {
       method: "POST",
       body: formData,
     });
