@@ -2,7 +2,7 @@ import ProductCard from "./ProductCard";
 import Link from "next/link";
 
 const newArrivals = [
-  { name: "HEAVYWEIGHT BOMBER JACKET", price: 85, originalPrice: 110, discount: 22, rating: 4.9, ratingCount: "4.9", imageUrl: "/images/first 2.png", productId: "heavyweight-bomber-jacket" },
+  { name: "HEAVYWEIGHT BOMBER JACKET", price: 85, originalPrice: 110, discount: 22, rating: 4.9, ratingCount: "4.9", imageUrl: "/images/jacket_bomber.png", productId: "heavyweight-bomber-jacket" },
   { name: "CHECKERED SHIRT", price: 45, rating: 4.5, ratingCount: "4.5", imageUrl: "/images/first 2.png", productId: "checkered-shirt" },
   { name: "T-SHIRT WITH TAPE DETAILS", price: 32, rating: 4.5, ratingCount: "4.5", imageUrl: "/images/first 3.png", productId: "tshirt-tape-details" },
   { name: "INDUSTRIAL BAGGIE JEANS", price: 65, rating: 4.8, ratingCount: "4.8", imageUrl: "/images/style_casual.png", productId: "industrial-baggy-jeans" },

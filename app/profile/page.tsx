@@ -24,6 +24,10 @@ export default function ProfileManagement() {
   const [visualStatus, setVisualStatus] = useState<string>("");
   const [visualResults, setVisualResults] = useState<{ [key: string]: string } | null>(null);
 
+  // Sync state
+  const [isSyncing, setIsSyncing] = useState(false);
+  const [syncSuccess, setSyncSuccess] = useState(false);
+
   const SUGGESTIONS = [
     { brand: "Nike", type: "T-Shirt", size: "Medium", chest: "39", waist: "32", hips: "39", inseam: "31", height: "178", weight: "75" },
     { brand: "Levi's", type: "Jeans", size: "32x32", chest: "40", waist: "33", hips: "41", inseam: "32", height: "180", weight: "78" },
@@ -298,15 +302,40 @@ export default function ProfileManagement() {
 
           <div className="flex justify-start sm:justify-end pt-4 pb-10">
             <button 
-              className="w-full sm:w-auto flex items-center justify-center gap-2 bg-[#1B1B1D] text-white px-10 py-4 rounded-full font-bold hover:bg-black/80 transition-transform hover:scale-[1.02] shadow-xl shadow-black/10"
+              className={`w-full sm:w-auto flex items-center justify-center gap-2 px-10 py-4 rounded-full font-bold transition-all shadow-xl shadow-black/10 ${
+                isSyncing ? "bg-indigo-600 text-white cursor-wait" :
+                syncSuccess ? "bg-green-500 text-white" :
+                "bg-[#1B1B1D] text-white hover:bg-black/80 hover:scale-[1.02]"
+              }`}
               style={{ fontFamily: "'DM Sans', sans-serif" }}
+              disabled={isSyncing}
               onClick={() => {
+                setIsSyncing(true);
                 saveMeasurements(measurements);
-                alert("Profile set up successfully! Your AI fit profile is now synced to your account.");
+                // Simulate DB push delay for animation effect
+                setTimeout(() => {
+                   setIsSyncing(false);
+                   setSyncSuccess(true);
+                   setTimeout(() => setSyncSuccess(false), 3000);
+                }, 1500);
               }}
             >
-              <CheckCircle2 className="w-5 h-5" />
-              Setup Profile
+              {isSyncing ? (
+                <>
+                  <Loader2 className="w-5 h-5 animate-spin" />
+                  Syncing to Neon DB...
+                </>
+              ) : syncSuccess ? (
+                <>
+                  <CheckCircle2 className="w-5 h-5" />
+                  Profile Synced!
+                </>
+              ) : (
+                <>
+                  <CheckCircle2 className="w-5 h-5" />
+                  Setup Profile
+                </>
+              )}
             </button>
           </div>
           

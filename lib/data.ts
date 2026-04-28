@@ -317,7 +317,7 @@ export const PRODUCTS: Record<string, Product> = {
       "XL": { chest: 119.4, shoulder: 48.3, sleeve: 66.0, length: 71.1 },
       "2XL": { chest: 124.5, shoulder: 49.5, sleeve: 66.0, length: 71.1 }
     },
-    images: ["/images/first 2.png", "/images/first 2.png"], // Using image 2 as a placeholder for jacket
+    images: ["/images/jacket_bomber.png", "/images/jacket_bomber.png"], // Using premium generated jacket image
     category: "Jackets",
     recommendationScore: 0.99
   },
