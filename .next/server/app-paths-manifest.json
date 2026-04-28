@@ -1,12 +1,12 @@
 {
   "/_not-found/page": "app/_not-found/page.js",
   "/cart/page": "app/cart/page.js",
-  "/checkout/page": "app/checkout/page.js",
   "/category/page": "app/category/page.js",
-  "/intelligence/page": "app/intelligence/page.js",
   "/measurements/page": "app/measurements/page.js",
+  "/intelligence/page": "app/intelligence/page.js",
   "/page": "app/page.js",
-  "/dashboard/page": "app/dashboard/page.js",
+  "/checkout/page": "app/checkout/page.js",
   "/profile/page": "app/profile/page.js",
+  "/dashboard/page": "app/dashboard/page.js",
   "/product/[id]/page": "app/product/[id]/page.js"
 }

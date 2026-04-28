@@ -5,6 +5,9 @@ export interface SizeMeasurement {
   inseam?: number;
   length?: number;
   shoulder?: number;
+  outseam?: number;
+  thigh?: number;
+  [key: string]: any;
 }
 
 export interface Product {
