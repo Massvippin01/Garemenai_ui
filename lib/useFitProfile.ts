@@ -11,12 +11,13 @@ export interface FitMeasurements {
   waist: string;
   hips: string;
   inseam: string;
+  thigh: string;
   hasUsedAi: boolean;
   interactionCount: number;
 }
 
 const DEFAULT_MEASUREMENTS = {
-  height: "", weight: "", chest: "", waist: "", hips: "", inseam: "", hasUsedAi: false, interactionCount: 0
+  height: "", weight: "", chest: "", waist: "", hips: "", inseam: "", thigh: "", hasUsedAi: false, interactionCount: 0
 };
 
 export function useFitProfile() {
@@ -54,6 +55,7 @@ export function useFitProfile() {
               waist: p.waist || currentData.waist,
               hips: p.hips || currentData.hips,
               inseam: p.inseam || currentData.inseam,
+              thigh: p.thigh || currentData.thigh,
               hasUsedAi: p.hasUsedAi || currentData.hasUsedAi,
               interactionCount: (p.interactionCount || currentData.interactionCount) + 1
            };

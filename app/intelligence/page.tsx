@@ -16,7 +16,7 @@ export default function IntelligenceDashboard() {
   useEffect(() => {
     // Only available on the client after mount
     setEnvStatus({
-      computeNode: process.env.NEXT_PUBLIC_ML_COMPUTE_NODE_URL || "http://localhost:8080 (Default Local Node)",
+      computeNode: process.env.NEXT_PUBLIC_ML_COMPUTE_NODE_URL || "Not Configured (Edge Mode)",
     });
   }, []);
 
@@ -127,14 +127,14 @@ export default function IntelligenceDashboard() {
             <div className="space-y-4 font-mono text-xs">
               <div className="bg-[#F9F9F9] p-4 rounded-xl border border-black/5 shadow-sm">
                 <span className="text-black font-bold uppercase tracking-widest block mb-1">Central ML Compute Node (Port 8080)</span>
-                <span className="text-black/60 break-all">{envStatus.computeNode}</span>
+                <span className="text-black/60 break-all font-mono">{envStatus.computeNode}</span>
               </div>
               <div className="bg-emerald-50 p-3 rounded-xl border border-emerald-100 mt-4">
                  <span className="text-emerald-800 text-xs font-bold uppercase tracking-widest">Internal Thread Routing:</span>
                  <ul className="text-emerald-900/70 text-sm mt-2 space-y-1 font-medium">
-                    <li>&rarr; Recommender: :8000</li>
-                    <li>&rarr; Photo CV: :8002</li>
-                    <li>&rarr; Sentiment: :8003</li>
+                    <li>&rarr; Recommender Service</li>
+                    <li>&rarr; Photo CV Engine</li>
+                    <li>&rarr; Sentiment Processor</li>
                  </ul>
               </div>
             </div>

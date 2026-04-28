@@ -65,7 +65,9 @@ export default function ProfileManagement() {
             waist: (parseFloat(suggestion.waist) * fakeWaitScale).toString(),
             hips: suggestion.hips,
             inseam: suggestion.inseam,
-            hasUsedAi: true
+            thigh: measurements.thigh,
+            hasUsedAi: true,
+            interactionCount: measurements.interactionCount + 1
         });
         alert(`Model 3 predicted your size is: ${res.final_size}\nReason: ${res.reason}`);
     } else {
@@ -77,7 +79,9 @@ export default function ProfileManagement() {
           waist: suggestion.waist,
           hips: suggestion.hips,
           inseam: suggestion.inseam,
-          hasUsedAi: true
+          thigh: measurements.thigh,
+          hasUsedAi: true,
+          interactionCount: measurements.interactionCount + 1
         });
     }
   };
@@ -94,7 +98,7 @@ export default function ProfileManagement() {
      formData.append("user_height", measurements.height);
 
      try {
-       const apiEndpoint = process.env.NEXT_PUBLIC_ML_PHOTO_URL || "http://localhost:8002/analyze";
+       const apiEndpoint = process.env.NEXT_PUBLIC_ML_PHOTO_URL || "";
        const response = await fetch(apiEndpoint, {
          method: "POST",
          body: formData,
@@ -110,7 +114,8 @@ export default function ProfileManagement() {
              waist: res.measurements.waist?.toString() || measurements.waist,
              hips: res.measurements.hips?.toString() || measurements.hips,
              inseam: res.measurements.inseam?.toString() || measurements.inseam,
-             hasUsedAi: true
+              hasUsedAi: true,
+              interactionCount: measurements.interactionCount + 1
           });
           
           // Store explicit findings for the UI display block (omitting weight intentionally)
@@ -124,7 +129,7 @@ export default function ProfileManagement() {
        }
      } catch (err) {
         setVisualStatus("");
-        alert("Failed to connect to local visual model (Make sure localhost:8002 is running!)");
+        alert("Failed to connect to the Visual AI Engine. Please check your network connection or backend status.");
      }
   };
 
@@ -219,6 +224,7 @@ export default function ProfileManagement() {
                 { label: "Waist", suffix: "cm", key: "waist" },
                 { label: "Hips", suffix: "cm", key: "hips" },
                 { label: "Inseam", suffix: "cm", key: "inseam" },
+                { label: "Thigh", suffix: "cm", key: "thigh" },
               ].map((field) => (
                 <div key={field.key} className="flex flex-col gap-1.5">
                   <label className="text-xs font-bold text-black/70 uppercase tracking-widest">{field.label}</label>
@@ -227,7 +233,7 @@ export default function ProfileManagement() {
                       type="text" 
                       placeholder="--"
                       className="w-full bg-[#f9f9f9] border border-black/10 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-black/30 transition-colors"
-                      value={measurements[field.key as keyof typeof measurements]}
+                      value={measurements[field.key as keyof typeof measurements] as any}
                       onChange={(e) => updateLocalMeasurements({ ...measurements, [field.key]: e.target.value })}
                     />
                     <span className="absolute right-4 top-1/2 -translate-y-1/2 text-xs font-bold text-black/30">{field.suffix}</span>
