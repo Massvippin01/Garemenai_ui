@@ -1,0 +1,29 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    font-family: var(--font-dm-sans), 'DM Sans', sans-serif;
+    background-color: #E9E9E9;
+    color: #000;
+    -webkit-font-smoothing: antialiased;
+  }
+}
+
+@layer utilities {
+  .uppercase-tracking {
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+}

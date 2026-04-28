@@ -1,0 +1,112 @@
+import { Product } from "@/types";
+import { FitMeasurements } from "./useFitProfile";
+
+export interface FitAnalysis {
+  recommendedSize: string | null;
+  confidenceScore: number;
+  returnProbability: number;
+  reasons: string[];
+}
+
+/**
+ * Sweeps all dimensions array to formulate a mathematically optimal size recommendation.
+ */
+export function recommendBestSize(product: Product, user: FitMeasurements): FitAnalysis {
+    // Default failover if AI hasn't secured dimensions
+    if (!product.sizeMeasurements || (!user.chest && !user.waist && !user.hips)) {
+        return {
+           recommendedSize: null,
+           confidenceScore: 0,
+           returnProbability: 50,
+           reasons: ["Complete your Profile to unlock predictive fit insights."]
+        };
+    }
+    
+    let bestSize = null;
+    let minDelta = Infinity;
+    let bestReasons: string[] = [];
+    let bestConfidence = 0;
+    
+    for (const size of product.sizes) {
+        const spec = product.sizeMeasurements[size];
+        if (!spec) continue;
+        
+        let localDelta = 0;
+        let diffs = [];
+        
+        if (user.chest && spec.chest) {
+           const d = parseFloat(user.chest) - spec.chest;
+           localDelta += Math.abs(d);
+           if (Math.abs(d) <= 2.5) diffs.push("Chest is a perfect match.");
+           else if (d > 2.5) diffs.push("Chest will be slightly tight.");
+           else diffs.push("Chest will offer comfortable breathing room.");
+        }
+        
+        if (user.waist && spec.waist) {
+           const d = parseFloat(user.waist) - spec.waist;
+           localDelta += Math.abs(d) * 1.5; // Waist is a high-confidence return vector
+           if (Math.abs(d) <= 2.5) diffs.push("Waist fits seamlessly.");
+           else if (d > 3.8) diffs.push("Waist may feel constrictive.");
+           else diffs.push("Waist is comfortably loose.");
+        }
+        
+        if (user.hips && spec.hips) {
+           const d = parseFloat(user.hips) - spec.hips;
+           localDelta += Math.abs(d);
+           if (Math.abs(d) <= 2.5) diffs.push("Hips align perfectly.");
+        }
+        
+        if (localDelta < minDelta) {
+            minDelta = localDelta;
+            bestSize = size;
+            bestReasons = diffs;
+            bestConfidence = Math.max(20, 100 - (localDelta * 2));
+        }
+    }
+    
+    // Risk roughly inverses confidence
+    const risk = Math.max(1, 100 - bestConfidence);
+    
+    return {
+        recommendedSize: bestSize,
+        confidenceScore: Math.round(bestConfidence),
+        returnProbability: Math.round(risk),
+        reasons: bestReasons.slice(0, 3) // Return top 3 insights
+    };
+}
+
+/**
+ * Extracts return probabilities for items structurally placed inside the user's cart against their user profile.
+ */
+export function evaluateCartItemFit(product: Product, selectedSize: string, user: FitMeasurements) {
+     if (!product.sizeMeasurements || !product.sizeMeasurements[selectedSize] || (!user.chest && !user.waist)) {
+        return {
+           confidenceScore: 50,
+           returnProbability: 35, // Average baseline without predictive intelligence
+           reasons: ["Insufficient predictive tracking data."]
+        };
+     }
+     
+     const spec = product.sizeMeasurements[selectedSize];
+     let localDelta = 0;
+     let severityFlag = 0; // Heavily penalize items > 2 standard deviations off to spike return probability
+     
+     if (user.chest && spec.chest) {
+         const cd = Math.abs(parseFloat(user.chest) - spec.chest);
+         localDelta += cd;
+         if (cd > 6) severityFlag += 25;
+     }
+     if (user.waist && spec.waist) {
+         const wd = Math.abs(parseFloat(user.waist) - spec.waist);
+         localDelta += wd * 1.5;
+         if (wd > 5) severityFlag += 40; 
+     }
+     
+     const conf = Math.max(5, 100 - (localDelta * 3));
+     const risk = Math.min(96, (100 - conf) * 1.2 + severityFlag);
+     
+     return {
+         confidenceScore: Math.round(conf),
+         returnProbability: Math.round(risk),
+     };
+}

@@ -1,0 +1,1 @@
+import 'dotenv/config'; import { PrismaClient } from '@prisma/client'; const prisma = new PrismaClient(); async function main() { try { const orders = await prisma.order.findMany(); console.log('success', orders.length); } catch (e) { console.error('Error:', e); } } main();
