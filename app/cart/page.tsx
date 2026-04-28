@@ -156,7 +156,6 @@ export default function CartPage() {
               <span className="text-2xl font-bold">${total.toFixed(2)}</span>
             </div>
 
-            {/* Promo Code */}
             <div className="flex gap-2.5 mt-2">
               <div className="flex-1 flex items-center gap-2 bg-[#f0f0f0] rounded-[30px] px-4 py-2.5">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="w-[18px] h-[18px] opacity-40">
@@ -173,27 +172,6 @@ export default function CartPage() {
                 Apply
               </button>
             </div>
-            
-            {/* Global Return Matrix */}
-            {mounted && items.length > 0 && (
-                <div className={`mt-2 p-4 rounded-[16px] border ${aggregateRisk > 50 ? 'bg-red-50 border-red-100' : aggregateRisk > 25 ? 'bg-amber-50 border-amber-100' : 'bg-green-50 border-green-100'}`}>
-                    <div className="flex justify-between items-center mb-2">
-                       <span className={`text-[10px] font-black uppercase tracking-widest flex items-center gap-1.5 ${aggregateRisk > 50 ? 'text-red-700' : aggregateRisk > 25 ? 'text-amber-700' : 'text-green-700'}`}>
-                          <Activity size={12} /> Model 2: Return Risk Matrix
-                       </span>
-                       <span className={`text-lg font-black ${aggregateRisk > 50 ? 'text-red-600' : aggregateRisk > 25 ? 'text-amber-600' : 'text-green-600'}`}>
-                          {aggregateRisk}%
-                       </span>
-                    </div>
-                    {aggregateRisk > 50 ? (
-                       <p className="text-[11px] font-medium text-red-800 leading-snug">Severe return probability. Sizing deviates heavily from your saved dimensions.</p>
-                    ) : aggregateRisk > 25 ? (
-                       <p className="text-[11px] font-medium text-amber-800 leading-snug">Moderate return risk. Check dimensions closely.</p>
-                    ) : (
-                       <p className="text-[11px] font-medium text-green-800 leading-snug">Optimal fit probability. Sizing mathematically aligns with your profile.</p>
-                    )}
-                </div>
-            )}
 
             {/* Checkout Button */}
             <Link href="/checkout" className="bg-black text-white border-none rounded-[30px] py-4 text-sm font-medium cursor-pointer flex items-center justify-center gap-2.5 w-full mt-2 hover:bg-black/80 transition-colors">

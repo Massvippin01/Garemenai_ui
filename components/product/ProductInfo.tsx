@@ -125,20 +125,30 @@ export default function ProductInfo({ product }: ProductInfoProps) {
           Choose Size
         </span>
         <div className="flex flex-wrap gap-2">
-          {product.sizes.map((size) => (
-            <button
-              key={size}
-              onClick={() => setSelectedSize(size)}
-              className={`px-5 py-2 rounded-full text-sm font-medium transition-all ${
-                selectedSize === size
-                  ? "bg-black text-white"
-                  : "bg-[#F0F0F0] text-black hover:bg-black/10"
-              }`}
-              style={{ fontFamily: "'DM Sans', sans-serif" }}
-            >
-              {SIZE_LABELS[size] || size}
-            </button>
-          ))}
+          {product.sizes.map((size) => {
+            const isRecommended = fitAnalysis?.recommendedSize === size;
+            return (
+              <button
+                key={size}
+                onClick={() => setSelectedSize(size)}
+                className={`relative px-5 py-2 rounded-full text-sm font-medium transition-all ${
+                  selectedSize === size
+                    ? "bg-black text-white"
+                    : isRecommended
+                      ? "bg-indigo-50 text-indigo-700 border border-indigo-200"
+                      : "bg-[#F0F0F0] text-black hover:bg-black/10"
+                }`}
+                style={{ fontFamily: "'DM Sans', sans-serif" }}
+              >
+                {SIZE_LABELS[size] || size}
+                {isRecommended && (
+                  <span className="absolute -top-2 -right-1 bg-indigo-600 text-white text-[8px] font-black px-1.5 py-0.5 rounded-full uppercase tracking-tighter shadow-md">
+                    Best Fit
+                  </span>
+                )}
+              </button>
+            );
+          })}
         </div>
 
         {/* AI Recommendation Badge */}
