@@ -60,7 +60,8 @@ export default function ProfileManagement() {
             chest: (parseFloat(suggestion.chest) * fakeWaitScale).toString(),
             waist: (parseFloat(suggestion.waist) * fakeWaitScale).toString(),
             hips: suggestion.hips,
-            inseam: suggestion.inseam
+            inseam: suggestion.inseam,
+            hasUsedAi: true
         });
         alert(`Model 3 predicted your size is: ${res.final_size}\nReason: ${res.reason}`);
     } else {
@@ -71,7 +72,8 @@ export default function ProfileManagement() {
           chest: suggestion.chest,
           waist: suggestion.waist,
           hips: suggestion.hips,
-          inseam: suggestion.inseam
+          inseam: suggestion.inseam,
+          hasUsedAi: true
         });
     }
   };
@@ -104,6 +106,7 @@ export default function ProfileManagement() {
              waist: res.measurements.waist?.toString() || measurements.waist,
              hips: res.measurements.hips?.toString() || measurements.hips,
              inseam: res.measurements.inseam?.toString() || measurements.inseam,
+             hasUsedAi: true
           });
           
           // Store explicit findings for the UI display block (omitting weight intentionally)

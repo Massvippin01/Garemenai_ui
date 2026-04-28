@@ -20,14 +20,17 @@ const SIZE_LABELS: Record<string, string> = {
 
 export default function ProductInfo({ product }: ProductInfoProps) {
   const [selectedColor, setSelectedColor] = useState(0);
-  const [selectedSize, setSelectedSize] = useState("Large");
+  const [selectedSize, setSelectedSize] = useState(product.sizes.includes("Large") ? "Large" : product.sizes[0]);
   const [qty, setQty] = useState(1);
   const { addToCart } = useCart();
   const [added, setAdded] = useState(false);
   
   const { measurements, mounted } = useFitProfile();
   const fitAnalysis = mounted ? recommendBestSize(product, measurements) : null;
-  const isOptimal = fitAnalysis && fitAnalysis.recommendedSize;
+  
+  // Cold Start Gate: Only show prediction after enough "transitions" or image training
+  const canShowRecommendation = measurements.hasUsedAi || measurements.interactionCount > 1;
+  const isOptimal = canShowRecommendation && fitAnalysis && fitAnalysis.recommendedSize;
 
   const handleAddToCart = () => {
     addToCart({
@@ -202,8 +205,20 @@ export default function ProductInfo({ product }: ProductInfoProps) {
               </div>
               <div className="flex flex-col gap-0.5">
                 <span className="text-[10px] font-bold text-black/40 uppercase">Shoulder</span>
-                <span className="text-sm font-black text-black">{product.sizeMeasurements[selectedSize].shoulder}</span>
+                <span className="text-sm font-black text-black">{product.sizeMeasurements[selectedSize].shoulder || "--"}</span>
               </div>
+              {product.sizeMeasurements[selectedSize].rise && (
+                <div className="flex flex-col gap-0.5">
+                  <span className="text-[10px] font-bold text-black/40 uppercase">Rise</span>
+                  <span className="text-sm font-black text-black">{product.sizeMeasurements[selectedSize].rise}</span>
+                </div>
+              )}
+              {product.sizeMeasurements[selectedSize].legOpening && (
+                <div className="flex flex-col gap-0.5">
+                  <span className="text-[10px] font-bold text-black/40 uppercase">Leg Opening</span>
+                  <span className="text-sm font-black text-black">{product.sizeMeasurements[selectedSize].legOpening}</span>
+                </div>
+              )}
             </div>
           </div>
         )}

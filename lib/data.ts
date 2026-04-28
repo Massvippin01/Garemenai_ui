@@ -277,6 +277,28 @@ export const PRODUCTS: Record<string, Product> = {
     images: ["/images/second 4.png", "/images/second 4.png", "/images/second 4.png"],
     category: "Jeans",
   },
+  "industrial-baggy-jeans": {
+    id: "industrial-baggy-jeans",
+    name: "INDUSTRIAL BAGGIE JEANS",
+    price: 65,
+    rating: 4.8,
+    reviewCount: 124,
+    description: "Ultra-wide baggy fit inspired by industrial workwear and 90s street fashion. Heavyweight denim with a massive leg opening.",
+    colors: ["#5D737E", "#1B1B1D"],
+    sizes: ["28", "30", "32", "34", "36", "38", "40"],
+    sizeMeasurements: {
+      "28": { waist: 74.9, hips: 91.4, inseam: 73.7, rise: 71.6, thigh: 55.9, legOpening: 83.8 },
+      "30": { waist: 80.0, hips: 96.5, inseam: 73.2, rise: 73.2, thigh: 58.4, legOpening: 86.4 },
+      "32": { waist: 85.1, hips: 101.6, inseam: 72.4, rise: 74.2, thigh: 61.0, legOpening: 88.9 },
+      "34": { waist: 90.2, hips: 106.7, inseam: 71.6, rise: 75.7, thigh: 63.5, legOpening: 91.4 },
+      "36": { waist: 95.3, hips: 111.8, inseam: 71.1, rise: 76.7, thigh: 66.0, legOpening: 94.0 },
+      "38": { waist: 100.3, hips: 116.8, inseam: 70.6, rise: 78.2, thigh: 68.6, legOpening: 96.5 },
+      "40": { waist: 105.4, hips: 121.9, inseam: 69.9, rise: 79.2, thigh: 71.1, legOpening: 99.1 }
+    },
+    images: ["/images/style_casual.png", "/images/style_casual.png"], // Using closest matching image from existing public assets
+    category: "Jeans",
+    recommendationScore: 0.98
+  },
 };
 
 export const REVIEWS: Review[] = [

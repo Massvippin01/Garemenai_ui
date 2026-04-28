@@ -22,6 +22,8 @@ export async function syncUserIntelligence(measurements: any) {
         waist: measurements.waist || undefined,
         hips: measurements.hips || undefined,
         inseam: measurements.inseam || undefined,
+        hasUsedAi: measurements.hasUsedAi !== undefined ? measurements.hasUsedAi : undefined,
+        interactionCount: measurements.interactionCount !== undefined ? measurements.interactionCount : undefined,
       },
       create: {
         clerkId,
@@ -34,6 +36,8 @@ export async function syncUserIntelligence(measurements: any) {
         waist: measurements.waist || null,
         hips: measurements.hips || null,
         inseam: measurements.inseam || null,
+        hasUsedAi: measurements.hasUsedAi || false,
+        interactionCount: measurements.interactionCount || 0,
       }
     });
 

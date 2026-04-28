@@ -55,6 +55,21 @@ export function recommendBestSize(product: Product, user: FitMeasurements): FitA
            localDelta += Math.abs(d);
            if (Math.abs(d) <= 2.5) diffs.push("Hips align perfectly.");
         }
+
+        if (user.thigh && spec.thigh) {
+           const d = parseFloat(user.thigh) - spec.thigh;
+           localDelta += Math.abs(d) * 0.5; // Thigh is secondary but important for baggy fit
+           if (d > 5) diffs.push("Leg volume will be slightly tight.");
+           else diffs.push("Excellent baggy leg volume.");
+        }
+
+        if (user.inseam && spec.inseam) {
+           const d = parseFloat(user.inseam) - spec.inseam;
+           localDelta += Math.abs(d) * 0.8;
+           if (Math.abs(d) <= 2.5) diffs.push("Length is mathematically perfect.");
+           else if (d > 0) diffs.push("Legs may be slightly short.");
+           else diffs.push("Stylish stacked length.");
+        }
         
         if (localDelta < minDelta) {
             minDelta = localDelta;

@@ -7,6 +7,8 @@ export interface SizeMeasurement {
   shoulder?: number;
   outseam?: number;
   thigh?: number;
+  rise?: number;
+  legOpening?: number;
   [key: string]: any;
 }
 

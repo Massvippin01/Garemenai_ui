@@ -5,7 +5,7 @@ const newArrivals = [
   { name: "SLEEVE STRIPED T-SHIRT", price: 25, originalPrice: 35, discount: 30, rating: 4.5, ratingCount: "4.5", imageUrl: "/images/first 1.png", productId: "sleeve-striped-tshirt" },
   { name: "CHECKERED SHIRT", price: 45, rating: 4.5, ratingCount: "4.5", imageUrl: "/images/first 2.png", productId: "checkered-shirt" },
   { name: "T-SHIRT WITH TAPE DETAILS", price: 32, rating: 4.5, ratingCount: "4.5", imageUrl: "/images/first 3.png", productId: "tshirt-tape-details" },
-  { name: "SKINNY FIT JEANS", price: 52, originalPrice: 65, discount: 20, rating: 3.5, ratingCount: "3.5", imageUrl: "/images/first 4.png", productId: "skinny-fit-jeans" },
+  { name: "INDUSTRIAL BAGGIE JEANS", price: 65, rating: 4.8, ratingCount: "4.8", imageUrl: "/images/style_casual.png", productId: "industrial-baggy-jeans" },
 ];
 
 export default function NewArrivals() {

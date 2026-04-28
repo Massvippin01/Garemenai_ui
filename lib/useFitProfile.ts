@@ -11,6 +11,8 @@ export interface FitMeasurements {
   waist: string;
   hips: string;
   inseam: string;
+  hasUsedAi: boolean;
+  interactionCount: number;
 }
 
 export function useFitProfile() {
@@ -20,7 +22,9 @@ export function useFitProfile() {
     chest: "",
     waist: "",
     hips: "",
-    inseam: ""
+    inseam: "",
+    hasUsedAi: false,
+    interactionCount: 0
   });
   const [mounted, setMounted] = useState(false);
 
@@ -43,7 +47,9 @@ export function useFitProfile() {
                chest: cloudData.profile.chest || "",
                waist: cloudData.profile.waist || "",
                hips: cloudData.profile.hips || "",
-               inseam: cloudData.profile.inseam || ""
+               inseam: cloudData.profile.inseam || "",
+               hasUsedAi: cloudData.profile.hasUsedAi || false,
+               interactionCount: cloudData.profile.interactionCount || 0
             };
             // Sync cloud down to fast local storage for UI snapping
             localStorage.setItem("celestials-fit-profile", JSON.stringify(activeMeasurements));
@@ -69,6 +75,15 @@ export function useFitProfile() {
 
     loadProfile();
   }, [user, isLoaded]);
+
+  // 1.5 Increment interaction count on page view (Transition tracking)
+  useEffect(() => {
+    if (mounted) {
+      const updated = { ...measurements, interactionCount: measurements.interactionCount + 1 };
+      setMeasurements(updated);
+      localStorage.setItem("celestials-fit-profile", JSON.stringify(updated));
+    }
+  }, [mounted]);
 
   // 2. Global Save Trigger (Saves to Local + securely pipelines to Neon DB)
   const saveMeasurements = (newMeasurements: FitMeasurements) => {
