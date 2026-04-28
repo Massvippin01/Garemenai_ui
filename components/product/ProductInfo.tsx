@@ -152,46 +152,31 @@ export default function ProductInfo({ product }: ProductInfoProps) {
         </div>
 
         {/* AI Recommendation Badge */}
-        {isOptimal ? (
-          <div className="mt-3 flex flex-col gap-3 py-3 px-4 bg-indigo-50/50 rounded-[12px] border border-indigo-100/50">
-            <div className="flex items-center gap-3">
-               <div className="w-2 h-2 bg-indigo-500 rounded-full animate-pulse shadow-[0_0_8px_rgba(99,102,241,0.5)]" />
-               <div className="flex flex-col">
-                 <span className="text-[10px] font-black text-indigo-700 uppercase tracking-[0.05em]">
-                   Model 2: Predictive Fit Engine
-                 </span>
-                 <span className="text-[13px] font-bold text-indigo-900">
-                   Recommended Size: <span className="underline underline-offset-2">{fitAnalysis?.recommendedSize}</span>
-                 </span>
-               </div>
-               <div className="ml-auto bg-white/80 backdrop-blur-sm self-center px-2 py-1 rounded-lg border border-indigo-200">
-                 <span className="text-[11px] font-black text-indigo-600">
-                   {fitAnalysis?.confidenceScore}% Match
-                 </span>
-               </div>
-            </div>
-            {fitAnalysis?.reasons && fitAnalysis.reasons.length > 0 && (
-               <div className="flex flex-col gap-1 border-t border-indigo-100/50 pt-2">
-                 <span className="text-[9px] font-bold text-indigo-400 uppercase tracking-widest">Dimension Scan</span>
-                 <ul className="text-[11px] font-medium text-indigo-800 list-disc list-inside">
-                    {fitAnalysis.reasons.map((r, i) => <li key={i}>{r}</li>)}
-                 </ul>
-               </div>
-            )}
-          </div>
-        ) : product.recommendationScore && !mounted ? (
-          <div className="mt-3 flex items-center gap-3 py-2.5 px-4 bg-green-50 rounded-[12px] border border-green-100/50">
-            <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse shadow-[0_0_8px_rgba(34,197,94,0.5)]" />
-            <div className="flex flex-col">
-              <span className="text-[10px] font-black text-green-700 uppercase tracking-[0.05em]">
-                Perfect Fit Recommendation
-              </span>
-              <span className="text-[13px] font-bold text-green-800">
-                Recommended Size: <span className="underline underline-offset-2">Large</span>
+        {isOptimal && (
+          <div className="mt-3 p-5 bg-green-50 border border-green-100 rounded-[20px] transition-all animate-in fade-in slide-in-from-bottom-4 duration-500">
+            <div className="flex items-center justify-between mb-3">
+              <div className="flex items-center gap-2">
+                <CheckCircle2 className="w-5 h-5 text-green-600" />
+                <span className="text-sm font-black text-green-900 uppercase tracking-tight">Matched to Profile</span>
+              </div>
+              <span className="text-xs font-bold text-green-600 bg-green-100/50 px-2.5 py-1 rounded-full">
+                {fitAnalysis.confidenceScore}% Confidence
               </span>
             </div>
+            <div className="flex flex-col gap-2">
+               <p className="text-xs font-bold text-green-800 leading-relaxed">
+                 Our AI analyzed your {measurements.hasUsedAi ? "33-point body scan" : "fit history"} and recommends <span className="underline decoration-2 underline-offset-4">{fitAnalysis.recommendedSize}</span> as your mathematical optimum.
+               </p>
+               <div className="flex flex-wrap gap-2 mt-1">
+                  {fitAnalysis.reasons.map((reason, i) => (
+                    <span key={i} className="text-[10px] font-bold bg-white/60 border border-green-200 text-green-700 px-3 py-1.5 rounded-full flex items-center gap-1.5">
+                       <ShieldCheck size={10} /> {reason}
+                    </span>
+                  ))}
+               </div>
+            </div>
           </div>
-        ) : null}
+        )}
 
         {/* Measurement Specs Card */}
         {product.sizeMeasurements?.[selectedSize] && (
