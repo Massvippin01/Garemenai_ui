@@ -34,32 +34,38 @@ export function recommendBestSize(product: Product, user: FitMeasurements): FitA
         let localDelta = 0;
         let diffs = [];
         
-        if (user.chest && spec.chest) {
-           const d = parseFloat(user.chest) - spec.chest;
+        // Add realistic Ease Allowances (Clothes must be 8-10cm larger than body for standard fit)
+        const targetChest = user.chest ? parseFloat(user.chest) + 10 : null;
+        const targetWaist = user.waist ? parseFloat(user.waist) + 8 : null;
+        const targetHips = user.hips ? parseFloat(user.hips) + 8 : null;
+        
+        if (targetChest && spec.chest) {
+           const d = spec.chest - targetChest; // Positive means garment is larger
            localDelta += Math.abs(d);
-           if (Math.abs(d) <= 2.5) diffs.push("Chest is a perfect match.");
-           else if (d > 2.5) diffs.push("Chest will be slightly tight.");
+           if (Math.abs(d) <= 3) diffs.push("Chest is a perfect match.");
+           else if (d < -3) diffs.push("Chest will be slightly tight.");
            else diffs.push("Chest will offer comfortable breathing room.");
         }
         
-        if (user.waist && spec.waist) {
-           const d = parseFloat(user.waist) - spec.waist;
+        if (targetWaist && spec.waist) {
+           const d = spec.waist - targetWaist;
            localDelta += Math.abs(d) * 1.5; // Waist is a high-confidence return vector
-           if (Math.abs(d) <= 2.5) diffs.push("Waist fits seamlessly.");
-           else if (d > 3.8) diffs.push("Waist may feel constrictive.");
-           else diffs.push("Waist is comfortably loose.");
+           if (Math.abs(d) <= 3) diffs.push("Waist fits comfortably.");
+           else if (d < -3) diffs.push("Waist may feel constrictive.");
+           else diffs.push("Waist is casually loose.");
         }
         
-        if (user.hips && spec.hips) {
-           const d = parseFloat(user.hips) - spec.hips;
+        if (targetHips && spec.hips) {
+           const d = spec.hips - targetHips;
            localDelta += Math.abs(d);
-           if (Math.abs(d) <= 2.5) diffs.push("Hips align perfectly.");
+           if (Math.abs(d) <= 3) diffs.push("Hips align perfectly.");
         }
 
         if (user.thigh && spec.thigh) {
-           const d = parseFloat(user.thigh) - spec.thigh;
-           localDelta += Math.abs(d) * 0.5; // Thigh is secondary but important for baggy fit
-           if (d > 5) diffs.push("Leg volume will be slightly tight.");
+           const targetThigh = parseFloat(user.thigh) + 6;
+           const d = spec.thigh - targetThigh;
+           localDelta += Math.abs(d) * 0.5; 
+           if (d < -3) diffs.push("Leg volume will be slightly tight.");
            else diffs.push("Excellent baggy leg volume.");
         }
 
@@ -106,13 +112,16 @@ export function evaluateCartItemFit(product: Product, selectedSize: string, user
      let localDelta = 0;
      let severityFlag = 0; // Heavily penalize items > 2 standard deviations off to spike return probability
      
-     if (user.chest && spec.chest) {
-         const cd = Math.abs(parseFloat(user.chest) - spec.chest);
+     const targetChest = user.chest ? parseFloat(user.chest) + 10 : null;
+     const targetWaist = user.waist ? parseFloat(user.waist) + 8 : null;
+     
+     if (targetChest && spec.chest) {
+         const cd = Math.abs(targetChest - spec.chest);
          localDelta += cd;
          if (cd > 6) severityFlag += 25;
      }
-     if (user.waist && spec.waist) {
-         const wd = Math.abs(parseFloat(user.waist) - spec.waist);
+     if (targetWaist && spec.waist) {
+         const wd = Math.abs(targetWaist - spec.waist);
          localDelta += wd * 1.5;
          if (wd > 5) severityFlag += 40; 
      }
