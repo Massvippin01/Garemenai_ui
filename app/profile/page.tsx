@@ -100,7 +100,7 @@ export default function ProfileManagement() {
        
        if (response.ok) {
           const res = await response.json();
-          setMeasurements({
+          saveMeasurements({
              ...measurements,
              chest: res.measurements.chest?.toString() || measurements.chest,
              waist: res.measurements.waist?.toString() || measurements.waist,
