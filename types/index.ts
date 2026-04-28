@@ -1,8 +1,10 @@
 export interface SizeMeasurement {
-  chest: number;
-  waist: number;
-  length: number;
-  shoulder: number;
+  chest?: number;
+  waist?: number;
+  hips?: number;
+  inseam?: number;
+  length?: number;
+  shoulder?: number;
 }
 
 export interface Product {
