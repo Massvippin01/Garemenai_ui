@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import { Minus, Plus, ShoppingCart } from "lucide-react";
+import { Minus, Plus, ShoppingCart, CheckCircle2, ShieldCheck } from "lucide-react";
 import StarRating from "@/components/StarRating";
 import { Product } from "@/types";
 import { useCart } from "@/lib/CartContext";
