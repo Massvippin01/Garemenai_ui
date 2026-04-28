@@ -9,6 +9,7 @@ export interface SizeMeasurement {
   thigh?: number;
   rise?: number;
   legOpening?: number;
+  sleeve?: number;
   [key: string]: any;
 }
 

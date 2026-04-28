@@ -11,7 +11,7 @@ import { useFitProfile } from "@/lib/useFitProfile";
 
 export default function ProfileManagement() {
   const { user, isLoaded } = useUser();
-  const { measurements, saveMeasurements: setMeasurements } = useFitProfile();
+  const { measurements, saveMeasurements } = useFitProfile();
 
   // AI Fit Generator States
   const [searchQuery, setSearchQuery] = useState("");
@@ -53,7 +53,7 @@ export default function ProfileManagement() {
     setIsPredicting(false);
     if (res.success && typeof res.final_size === 'string') {
         const fakeWaitScale = 1.0; 
-        setMeasurements({
+        saveMeasurements({
             // Fallback to suggestion baseline if API just returns standard size strings
             height: suggestion.height,
             weight: suggestion.weight,
@@ -66,7 +66,7 @@ export default function ProfileManagement() {
         alert(`Model 3 predicted your size is: ${res.final_size}\nReason: ${res.reason}`);
     } else {
         // Fallback
-        setMeasurements({
+        saveMeasurements({
           height: suggestion.height,
           weight: suggestion.weight,
           chest: suggestion.chest,
@@ -170,7 +170,7 @@ export default function ProfileManagement() {
                <input 
                  type="number" 
                  value={measurements.height}
-                 onChange={(e) => setMeasurements({...measurements, height: e.target.value})}
+                 onChange={(e) => saveMeasurements({...measurements, height: e.target.value})}
                  placeholder="e.g. 175"
                  className="w-full max-w-[200px] border border-black/20 rounded-xl px-4 py-2 text-sm focus:outline-none focus:border-black/50 bg-white"
                />
@@ -224,7 +224,7 @@ export default function ProfileManagement() {
                       placeholder="--"
                       className="w-full bg-[#f9f9f9] border border-black/10 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-black/30 transition-colors"
                       value={measurements[field.key as keyof typeof measurements]}
-                      onChange={(e) => setMeasurements({ ...measurements, [field.key]: e.target.value })}
+                      onChange={(e) => saveMeasurements({ ...measurements, [field.key]: e.target.value })}
                     />
                     <span className="absolute right-4 top-1/2 -translate-y-1/2 text-xs font-bold text-black/30">{field.suffix}</span>
                   </div>
@@ -300,7 +300,10 @@ export default function ProfileManagement() {
             <button 
               className="w-full sm:w-auto flex items-center justify-center gap-2 bg-[#1B1B1D] text-white px-10 py-4 rounded-full font-bold hover:bg-black/80 transition-transform hover:scale-[1.02] shadow-xl shadow-black/10"
               style={{ fontFamily: "'DM Sans', sans-serif" }}
-              onClick={() => alert("Profile set up successfully! AI fit model updated.")}
+              onClick={() => {
+                saveMeasurements(measurements);
+                alert("Profile set up successfully! Your AI fit profile is now synced to your account.");
+              }}
             >
               <CheckCircle2 className="w-5 h-5" />
               Setup Profile

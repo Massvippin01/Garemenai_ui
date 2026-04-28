@@ -299,6 +299,28 @@ export const PRODUCTS: Record<string, Product> = {
     category: "Jeans",
     recommendationScore: 0.98
   },
+  "heavyweight-bomber-jacket": {
+    id: "heavyweight-bomber-jacket",
+    name: "HEAVYWEIGHT BOMBER JACKET",
+    price: 85,
+    originalPrice: 110,
+    discount: 22,
+    rating: 4.9,
+    reviewCount: 312,
+    description: "Classic military-inspired bomber with a contemporary fit. High-density water-resistant nylon shell with diamond-quilted lining for extreme warmth.",
+    colors: ["#3E4B3E", "#1B1B1D"],
+    sizes: ["S", "M", "L", "XL", "2XL"],
+    sizeMeasurements: {
+      "S": { chest: 104.1, shoulder: 44.5, sleeve: 63.5, length: 68.6 },
+      "M": { chest: 109.2, shoulder: 45.7, sleeve: 63.5, length: 68.6 },
+      "L": { chest: 114.3, shoulder: 47.0, sleeve: 66.0, length: 71.1 },
+      "XL": { chest: 119.4, shoulder: 48.3, sleeve: 66.0, length: 71.1 },
+      "2XL": { chest: 124.5, shoulder: 49.5, sleeve: 66.0, length: 71.1 }
+    },
+    images: ["/images/first 2.png", "/images/first 2.png"], // Using image 2 as a placeholder for jacket
+    category: "Jackets",
+    recommendationScore: 0.99
+  },
 };
 
 export const REVIEWS: Review[] = [
